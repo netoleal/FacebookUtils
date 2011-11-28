@@ -42,7 +42,23 @@ Exemplo básico
         private function onLogin( success:Boolean ):void
         {
           trace( fb.user );
+          fb.user.loadFriends( ).queue( onLoadFriends );
         }
+        
+        private function onLoadFriends( ):void
+        {
+          trace( fb.user.friends.length );
+          
+          var firstFriend:FacebookFriendModel = fb.user.friends[ 0 ];
+          
+          firstFriend.user.load( ).queue( onFriendUserLoad, firstFriend );
+        }
+        
+        private function onFriendUserLoad( friend:FacebookFriendModel, success:Boolean ):void
+        {
+          trace( friend.user.fullName );
+        }
+        
         
         public function dispose():void
         {

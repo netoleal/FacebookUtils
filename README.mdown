@@ -9,6 +9,7 @@ Exemplo básico
     package
     {
       import com.netoleal.facebook.app.FacebookApplication;
+      import com.netoleal.facebook.model.FacebookFriendModel;
       
       public class FacebookApplicationExample
       {

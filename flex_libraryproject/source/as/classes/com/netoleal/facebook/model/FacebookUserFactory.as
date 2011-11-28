@@ -11,5 +11,10 @@ package com.netoleal.facebook.model
 			
 			return users[ uid ];
 		}
+		
+		public static function removeUser( user:FacebookUserModel ):void
+		{
+			if( user && users && users[ user.id ] ) users[ user.id ] = null;
+		}
 	}
 }

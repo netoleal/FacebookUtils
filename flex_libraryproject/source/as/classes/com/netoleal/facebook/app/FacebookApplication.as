@@ -109,5 +109,12 @@ package com.netoleal.facebook.app
 				initSeq.notifyComplete( false );
 			}
 		}
+		
+		public function dispose( ):void
+		{
+			facebookSession = null;
+			user.dispose( );
+			user = null;
+		}
 	}
 }

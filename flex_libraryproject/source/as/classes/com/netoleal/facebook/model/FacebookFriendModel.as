@@ -27,5 +27,14 @@ package com.netoleal.facebook.model
 		{
 			return FacebookUserFactory.getUser( this.id );
 		}
+		
+		public function dispose( ):void
+		{
+			raw = null;
+			if( user )
+			{
+				user.dispose( );
+			}
+		}
 	}
 }

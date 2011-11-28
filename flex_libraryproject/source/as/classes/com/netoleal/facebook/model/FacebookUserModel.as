@@ -326,5 +326,23 @@ package com.netoleal.facebook.model
 		{
 			return uid;//raw.id;
 		}
+		
+		public function dispose( ):void
+		{
+			if( _friends )
+			{
+				var friend:FacebookFriendModel;
+				
+				for each( friend in friends )
+				{
+					friend.dispose( );
+				}
+				
+				_friends = null;
+			}
+			
+			FacebookUserFactory.removeUser( this );
+			raw = null;
+		}
 	}
 }

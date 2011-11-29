@@ -36,16 +36,35 @@ package com.netoleal.facebook.connections.model
 			return loadSeq;
 		}
 		
+		/**
+		 * ID da Foto capa do album
+		 * Só acessível depois do "load"
+		 *  
+		 * @return 
+		 * 
+		 */
 		public function get coverPhoto( ):String
 		{
 			return data.cover_photo;
 		}
 		
+		/**
+		 * Quantidade de fotos
+		 * Só acessível depois do "load" 
+		 * @return 
+		 * 
+		 */
 		public function get countPhotos( ):uint
 		{
 			return data.count;
 		}
 		
+		/**
+		 * Array de objetos com os likes do album
+		 * Só acessível depois do "load" 
+		 * @return 
+		 * 
+		 */
 		public function get likes( ):Array
 		{
 			return data.likes.data;
@@ -74,6 +93,12 @@ package com.netoleal.facebook.connections.model
 			return data.comments.data;
 		}
 		
+		/**
+		 * link para ler comentários da próxima página.
+		 * Só acessível depois do "load" 
+		 * @return 
+		 * 
+		 */
 		public function get commentsPagingNext( ):String
 		{
 			return data.comments.paging.next;

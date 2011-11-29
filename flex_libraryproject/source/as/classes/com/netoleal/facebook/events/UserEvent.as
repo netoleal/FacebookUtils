@@ -4,7 +4,7 @@
  **/
 package com.netoleal.facebook.events
 {
-	import com.netoleal.facebook.model.FacebookUserModel;
+	import com.netoleal.facebook.members.FacebookUser;
 	
 	import flash.events.Event;
 	
@@ -14,7 +14,7 @@ package com.netoleal.facebook.events
 		public static const ALL_FRIENDS_DATA_LOADED:String = "allFriendsDataLoaded";
 		public static const FRIEND_DATA_LOADED:String = "friendDataLoaded";
 		
-		public var friend:FacebookUserModel;
+		public var friend:FacebookUser;
 		
 		public function UserEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

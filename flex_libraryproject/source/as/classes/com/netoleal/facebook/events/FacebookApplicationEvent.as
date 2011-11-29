@@ -9,6 +9,7 @@ package com.netoleal.facebook.events
 		
 		public static const LOGIN_START:String = "loginStart";
 		public static const LOGIN_COMPLETE:String = "loginComplete";
+		public static const LOGIN_FAIL:String = "loginFail";
 		
 		public function FacebookApplicationEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

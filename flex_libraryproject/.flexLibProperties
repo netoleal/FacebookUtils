@@ -2,6 +2,18 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.netoleal.facebook.events.FacebookApplicationEvent"/>
+    <classEntry path="com.netoleal.facebook.connections.Connections"/>
+    <classEntry path="com.netoleal.facebook.connections.BaseConnection"/>
+    <classEntry path="com.netoleal.facebook.connections.Wall"/>
+    <classEntry path="com.netoleal.facebook.connections.model.WallPostModel"/>
+    <classEntry path="com.netoleal.facebook.connections.model.WallPostApplicationModel"/>
+    <classEntry path="com.netoleal.facebook.connections.model.WallPostCommentModel"/>
+    <classEntry path="com.netoleal.facebook.connections.model.BasePostEntityModel"/>
+    <classEntry path="com.netoleal.facebook.connections.Friends"/>
+    <classEntry path="com.netoleal.facebook.connections.Albums"/>
+    <classEntry path="com.netoleal.facebook.app.Permissions"/>
+    <classEntry path="com.netoleal.facebook.connections.model.AlbumModel"/>
+    <classEntry path="com.netoleal.facebook.connections.model.AlbumCommentModel"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

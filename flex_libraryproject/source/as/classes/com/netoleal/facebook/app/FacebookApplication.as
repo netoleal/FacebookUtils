@@ -6,8 +6,8 @@ package com.netoleal.facebook.app
 	import com.facebook.graph.Facebook;
 	import com.facebook.graph.data.FacebookSession;
 	import com.netoleal.facebook.events.FacebookApplicationEvent;
-	import com.netoleal.facebook.model.FacebookUserFactory;
-	import com.netoleal.facebook.model.FacebookUserModel;
+	import com.netoleal.facebook.members.FacebookUser;
+	import com.netoleal.facebook.members.FacebookUserFactory;
 	
 	import flash.events.EventDispatcher;
 	
@@ -21,7 +21,7 @@ package com.netoleal.facebook.app
 		private var _initCallback:Function;
 		
 		public var facebookSession:FacebookSession;
-		public var user:FacebookUserModel;
+		public var user:FacebookUser;
 		
 		private var initSeq:Sequence;
 		private var userSeq:Sequence;
@@ -47,21 +47,28 @@ package com.netoleal.facebook.app
 			return initSeq;
 		}
 		
-		public function loginUser( p_scopePermissions:String = "publish_stream" ):ISequence
+		public function loginUser( ... permissions ):ISequence
 		{
 			loginSeq.notifyStart( );
 			
 			this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_START ) );
 			
-			Facebook.login( onLogin, { scope: p_scopePermissions } );
+			Facebook.login( onLogin, { scope: [ ].concat( permissions ).join( "," ) } );
 			
 			return loginSeq;
 		}
 		
 		private function onLogin( result:Object, error:Object ):void
 		{
-			loginSeq.notifyComplete( result != null );
-			this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_COMPLETE ) );
+			if( result )
+			{
+				loadCurrentUser( )
+			}
+			else
+			{
+				loginSeq.notifyComplete( false );
+				this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_FAIL ) );
+			}
 		}
 		
 		private function initCallback( session:Object, error:Object ):void
@@ -100,12 +107,23 @@ package com.netoleal.facebook.app
 				
 				this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.USER_LOAD_COMPLETE ) );
 				
-				initSeq.notifyComplete( true );
+				if( !initSeq.completed ) initSeq.notifyComplete( true );
+				if( !loginSeq.completed )
+				{
+					loginSeq.notifyComplete( true );
+					this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_COMPLETE ) );
+				}
+				
 				userSeq.notifyComplete( true );
 			}
 			else
 			{
-				userSeq.notifyComplete( false );
+				if( !initSeq.completed ) userSeq.notifyComplete( false );
+				if( !loginSeq.completed )
+				{
+					loginSeq.notifyComplete( false );
+				}
+				
 				initSeq.notifyComplete( false );
 			}
 		}

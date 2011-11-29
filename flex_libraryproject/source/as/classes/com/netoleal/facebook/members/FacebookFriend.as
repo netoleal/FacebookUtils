@@ -2,13 +2,13 @@
  * @author: Neto Leal
  *
  **/
-package com.netoleal.facebook.model
+package com.netoleal.facebook.members
 {
-	public class FacebookFriendModel
+	public class FacebookFriend
 	{
 		private var raw:Object;
 		
-		public function FacebookFriendModel( p_raw:Object )
+		public function FacebookFriend( p_raw:Object )
 		{
 			raw = p_raw;
 		}
@@ -23,7 +23,7 @@ package com.netoleal.facebook.model
 			return raw.name;
 		}
 		
-		public function get user( ):FacebookUserModel
+		public function get user( ):FacebookUser
 		{
 			return FacebookUserFactory.getUser( this.id );
 		}

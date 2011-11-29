@@ -39,7 +39,7 @@ package com.netoleal.facebook.connections
 			
 			_albums = new Vector.<AlbumModel>( );
 			
-			for each( albumRaw in _albums )
+			for each( albumRaw in result )
 			{
 				_albums.push( new AlbumModel( albumRaw ) );
 			}

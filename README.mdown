@@ -15,6 +15,7 @@ Exemplo básico
     {
       import com.netoleal.facebook.app.FacebookApplication;
       import com.netoleal.facebook.model.FacebookFriendModel;
+      import com.netoleal.facebook.connections.Friends;
       
       public class FacebookApplicationExample
       {
@@ -48,14 +49,14 @@ Exemplo básico
         private function onLogin( success:Boolean ):void
         {
           trace( fb.user );
-          fb.user.loadFriends( ).queue( onLoadFriends );
+          fb.user.friends.load( ).queue( onLoadFriends );
         }
         
-        private function onLoadFriends( ):void
+        private function onLoadFriends( friends:Friends ):void
         {
-          trace( fb.user.friends.length );
+          trace( friends.items.length );
           
-          var firstFriend:FacebookFriendModel = fb.user.friends[ 0 ];
+          var firstFriend:FacebookFriendModel = friends.items[ 0 ];
           
           firstFriend.user.load( ).queue( onFriendUserLoad, firstFriend );
         }

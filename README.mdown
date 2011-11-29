@@ -8,6 +8,11 @@ Atenção!!
 
 Este projeto usa classes do ASF2 e contém um SWC com tais classes. Porém, para ter certeza que você tem essas classes em sua versão mais atualizada, baixe o repositório do ASF2 em https://github.com/netoleal/ASF2.
 
+Atenção!! #2
+==========
+
+Não existe o compromisso de manter sempre essa lib 100% atualizada com a GraphAPI do Facebook. Todos sabemos que eles insistem em mudar a API o tempo inteiro e então vou atualizando conforme for havendo a necessidade ou mudanças forem apontadas por quem estiver usando. Portanto se você encontrou algum bug e/ou alteração na API que não está prevista aqui, fique à vontade para fazer um Pull request com sua atualização ;)
+
 Exemplo básico
 ---------------
 

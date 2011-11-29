@@ -16,6 +16,7 @@ Exemplo básico
       import com.netoleal.facebook.app.FacebookApplication;
       import com.netoleal.facebook.model.FacebookFriendModel;
       import com.netoleal.facebook.connections.Friends;
+      import com.netoleal.facebook.app.Permissions;
       
       public class FacebookApplicationExample
       {
@@ -38,7 +39,15 @@ Exemplo básico
           
           if( !success )
           {
-            fb.loginUser( ).queue( onLogin );
+            fb.loginUser(
+              Permissions.USER_PHOTOS, 
+              Permissions.PUBLISH_STREAM, 
+              Permissions.READ_FRIENDLISTS, 
+              Permissions.USER_LOCATION, 
+              Permissions.USER_LIKES,
+              Permissions.USER_RELATINSHIPS,
+              Permissions.USER_ABOUT_ME
+             ).queue( onLogin );
           }
           else
           {

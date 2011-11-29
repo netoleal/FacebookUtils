@@ -7,19 +7,28 @@ package com.netoleal.facebook.connections.model
 	import com.facebook.graph.Facebook;
 	import com.netoleal.facebook.members.FacebookUser;
 	import com.netoleal.facebook.members.FacebookUserFactory;
+	import com.netoleal.facebook.net.ImageUploader;
+	
+	import flash.display.BitmapData;
 	
 	public class AlbumModel extends BaseModel
 	{
 		private var loadSeq:Sequence;
 		private var loadPhotosSeq:Sequence;
+		
 		private var data:Object;
 		
 		public function AlbumModel(p_raw:*)
 		{
-			super(p_raw);
+			super( p_raw );
 			
 			loadSeq = new Sequence( );
 			loadPhotosSeq = new Sequence( );
+		}
+		
+		public function uploadPhoto( image:BitmapData, message:String = "" ):ISequence
+		{
+			return new ImageUploader( ).uploadPhoto( this.id, image, message );
 		}
 		
 		public function load( ):ISequence

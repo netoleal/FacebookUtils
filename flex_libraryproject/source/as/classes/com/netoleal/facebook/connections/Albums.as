@@ -7,9 +7,13 @@ package com.netoleal.facebook.connections
 	import com.netoleal.facebook.connections.model.AlbumModel;
 	import com.netoleal.facebook.members.FacebookUser;
 	
+	import flash.net.URLRequestMethod;
+	
 	public class Albums extends BaseConnection
 	{
 		private var loadSeq:Sequence;
+		private var createAlbumSeq:Sequence;
+		
 		private var _albums:Vector.<AlbumModel>;
 		
 		public function Albums(p_user:FacebookUser)
@@ -17,6 +21,27 @@ package com.netoleal.facebook.connections
 			super(p_user);
 			
 			loadSeq = new Sequence( );
+			createAlbumSeq = new Sequence( );
+		}
+		
+		public function createNew( name:String, description:String = "", privacy:String = "EVERYONE" ):ISequence
+		{
+			createAlbumSeq.notifyStart( );
+			
+			Facebook.api( _user.id + "/albums", onAlbumCreateComplete, {
+				name: name,
+				message: description,
+				privacy: { value: privacy }
+			}, URLRequestMethod.POST );
+			
+			return createAlbumSeq;
+		}
+		
+		private function onAlbumCreateComplete( result:Object, error:Object ):void
+		{
+			log( arguments );
+			
+			createAlbumSeq.notifyComplete( result );
 		}
 		
 		public function load( forceRefresh:Boolean = false ):ISequence

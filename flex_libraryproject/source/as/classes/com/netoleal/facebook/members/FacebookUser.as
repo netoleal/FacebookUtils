@@ -8,7 +8,9 @@ package com.netoleal.facebook.members
 	import com.facebook.graph.Facebook;
 	import com.netoleal.facebook.connections.Connections;
 	import com.netoleal.facebook.events.UserEvent;
+	import com.netoleal.facebook.net.ImageUploader;
 	
+	import flash.display.BitmapData;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -48,6 +50,11 @@ package com.netoleal.facebook.members
 			
 			loadSequence = new Sequence( );
 			friendsSequence = new Sequence( );
+		}
+		
+		public function uploadPhoto( image:BitmapData, description:String = "" ):ISequence
+		{
+			return new ImageUploader( ).uploadPhoto( id, image, description );
 		}
 		
 		public function get rawData( ):Object

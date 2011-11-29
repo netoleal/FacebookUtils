@@ -14,6 +14,7 @@
     <classEntry path="com.netoleal.facebook.app.Permissions"/>
     <classEntry path="com.netoleal.facebook.connections.model.AlbumModel"/>
     <classEntry path="com.netoleal.facebook.connections.model.AlbumCommentModel"/>
+    <classEntry path="com.netoleal.facebook.net.ImageUploader"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -30,9 +30,9 @@ package com.netoleal.facebook.net
 			return uploadSequence;
 		}
 		
-		private function onPhotoUploadComplete( ... args ):void
+		private function onPhotoUploadComplete( result:Object, error:Object ):void
 		{
-			uploadSequence.notifyComplete( );
+			uploadSequence.notifyComplete( error == null, result, error );
 		}
 	}
 }

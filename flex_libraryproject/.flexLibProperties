@@ -15,6 +15,7 @@
     <classEntry path="com.netoleal.facebook.connections.model.AlbumModel"/>
     <classEntry path="com.netoleal.facebook.connections.model.AlbumCommentModel"/>
     <classEntry path="com.netoleal.facebook.net.ImageUploader"/>
+    <classEntry path="com.netoleal.facebook.connections.model.AlbumPhotoModel"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -17,6 +17,7 @@ package com.netoleal.facebook.connections.model
 		private var loadPhotosSeq:Sequence;
 		
 		private var data:Object;
+		private var _photos:Vector.<AlbumPhotoModel>;
 		
 		public function AlbumModel(p_raw:*)
 		{
@@ -43,6 +44,11 @@ package com.netoleal.facebook.connections.model
 			Facebook.api( "/" + this.id, onLoadDataComplete );
 			
 			return loadSeq;
+		}
+		
+		public function clearLoadSequence( ):void
+		{
+			loadSeq.clearQueue( );
 		}
 		
 		/**
@@ -128,9 +134,35 @@ package com.netoleal.facebook.connections.model
 		{
 			loadPhotosSeq.notifyStart( );
 			
-			//Facebook.api( "/" 
+			if( _photos == null || forceRefresh )
+			{
+				Facebook.api( "/" + this.id + "/photos", onPhotosLoaded );
+			}
+			else
+			{
+				return loadPhotosSeq.notifyComplete( this );
+			}
 			
 			return loadPhotosSeq;
+		}
+		
+		private function onPhotosLoaded( result:Object, error:Object ):void
+		{
+			var photoRaw:Object;
+			
+			_photos = new Vector.<AlbumPhotoModel>( );
+			
+			for each( photoRaw in result )
+			{
+				_photos.push( new AlbumPhotoModel( photoRaw ) );
+			}
+			
+			loadPhotosSeq.notifyComplete( this );
+		}
+		
+		public function get photos( ):Vector.<AlbumPhotoModel>
+		{
+			return _photos;
 		}
 		
 		public function get canUpload( ):Boolean

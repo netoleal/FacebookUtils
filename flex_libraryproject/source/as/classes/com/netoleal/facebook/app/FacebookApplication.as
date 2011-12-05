@@ -47,6 +47,21 @@ package com.netoleal.facebook.app
 			return initSeq;
 		}
 		
+		public function loginUserWidthLoad( ... permissions ):ISequence
+		{
+			return ( loginUser.apply( null, permissions ) as ISequence ).queue( function( success:Boolean ):ISequence
+			{
+				if( success )
+				{
+					return loadCurrentUser( );
+				}
+				else
+				{
+					return new Sequence( ).notifyComplete( false );
+				}
+			} );
+		}
+		
 		public function loginUser( ... permissions ):ISequence
 		{
 			loginSeq.notifyStart( );
@@ -60,15 +75,11 @@ package com.netoleal.facebook.app
 		
 		private function onLogin( result:Object, error:Object ):void
 		{
-			if( result )
-			{
-				loadCurrentUser( )
-			}
-			else
-			{
-				loginSeq.notifyComplete( false );
-				this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_FAIL ) );
-			}
+			loginSeq.notifyComplete( result != null );
+			
+			if( !initSeq.completed ) initSeq.notifyComplete( true );
+			
+			this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_FAIL ) );
 		}
 		
 		private function initCallback( session:Object, error:Object ):void
@@ -107,7 +118,6 @@ package com.netoleal.facebook.app
 				
 				this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.USER_LOAD_COMPLETE ) );
 				
-				if( !initSeq.completed ) initSeq.notifyComplete( true );
 				if( !loginSeq.completed )
 				{
 					loginSeq.notifyComplete( true );
@@ -125,6 +135,7 @@ package com.netoleal.facebook.app
 				}
 				
 				initSeq.notifyComplete( false );
+				userSeq.notifyComplete( false );
 			}
 		}
 		

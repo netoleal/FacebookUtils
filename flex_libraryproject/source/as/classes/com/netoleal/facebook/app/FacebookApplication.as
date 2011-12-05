@@ -4,21 +4,25 @@ package com.netoleal.facebook.app
 	import asf.interfaces.ISequence;
 	
 	import com.facebook.graph.Facebook;
+	import com.facebook.graph.data.FacebookAuthResponse;
 	import com.facebook.graph.data.FacebookSession;
 	import com.netoleal.facebook.events.FacebookApplicationEvent;
 	import com.netoleal.facebook.members.FacebookUser;
 	import com.netoleal.facebook.members.FacebookUserFactory;
 	
 	import flash.events.EventDispatcher;
+	import flash.utils.clearInterval;
+	import flash.utils.getTimer;
+	import flash.utils.setInterval;
 	
 	[Event(name="userLoadStart", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
 	[Event(name="userLoadComplete", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
 	
 	public class FacebookApplication extends EventDispatcher
 	{
-		private var _id:String;
+		public static var loginTimeout:uint = 10000;
 		
-		private var _initCallback:Function;
+		private var _id:String;
 		
 		public var facebookSession:FacebookSession;
 		public var user:FacebookUser;
@@ -26,6 +30,9 @@ package com.netoleal.facebook.app
 		private var initSeq:Sequence;
 		private var userSeq:Sequence;
 		private var loginSeq:Sequence;
+		
+		private var loginTimer:int = -1;
+		private var loginStartTime:int;
 		
 		public function FacebookApplication( applicationID:String ):void
 		{
@@ -53,16 +60,48 @@ package com.netoleal.facebook.app
 			
 			this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.LOGIN_START ) );
 			
-			Facebook.login( onLogin, { scope: [ ].concat( permissions ).join( "," ) } );
+			loginStartTime = getTimer( );
+			clearLoginTimer( );
+			
+			loginTimer = setInterval( onLoginTimer, 500 );
+			
+			Facebook.login( log, { scope: [ ].concat( permissions ).join( "," ) } );
 			
 			return loginSeq;
 		}
 		
-		private function onLogin( result:Object, error:Object ):void
+		private function onLoginTimer( ):void
+		{
+			var result:FacebookAuthResponse = Facebook.getAuthResponse( );
+			
+			if( result.uid )
+			{
+				clearLoginTimer( );
+				onLogin( result, null );
+			}
+			else
+			{
+				if( getTimer( ) - loginStartTime > loginTimeout )
+				{
+					clearLoginTimer( );
+					onLogin( null, null );
+				}
+			}
+		}
+		
+		private function clearLoginTimer( ):void
+		{
+			if( loginTimer != -1 )
+			{
+				clearInterval( loginTimer );
+				loginTimer = -1;
+			}
+		}
+		
+		private function onLogin( result:FacebookAuthResponse, error:Object ):void
 		{
 			if( result )
 			{
-				//loadCurrentUser( )
 				if( !loginSeq.completed )
 				{
 					loginSeq.notifyComplete( true );
@@ -82,17 +121,19 @@ package com.netoleal.facebook.app
 			
 			if( !session )
 			{
-				_initCallback.apply( null, [ session, error ] );
 				initSeq.notifyComplete( false );
 			}
 			else
 			{
-				loadCurrentUser( );
+				initSeq.notifyComplete( true );
+				//loadCurrentUser( );
 			}
 		}
 		
 		public function loadCurrentUser( ):ISequence
 		{
+			log( );
+			
 			userSeq.notifyStart( );
 			
 			this.dispatchEvent( new FacebookApplicationEvent( FacebookApplicationEvent.USER_LOAD_START ) );
@@ -104,6 +145,8 @@ package com.netoleal.facebook.app
 		
 		private function onLoadUser( _user:Object, _error:Object ):void
 		{
+			log( _user );
+			
 			if( _user )
 			{
 				user = FacebookUserFactory.getUser( _user.id, _user );
@@ -130,6 +173,7 @@ package com.netoleal.facebook.app
 				}
 				
 				initSeq.notifyComplete( false );
+				userSeq.notifyComplete( false );
 			}
 		}
 		

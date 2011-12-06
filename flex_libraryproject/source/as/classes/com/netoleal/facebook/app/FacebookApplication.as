@@ -16,6 +16,8 @@ package com.netoleal.facebook.app
 	import flash.utils.setInterval;
 	
 	[Event(name="userLoadStart", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
+	[Event(name="loginFail", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
+	[Event(name="loginComplete", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
 	[Event(name="userLoadComplete", type="com.netoleal.facebook.events.FacebookApplicationEvent")]
 	
 	public class FacebookApplication extends EventDispatcher

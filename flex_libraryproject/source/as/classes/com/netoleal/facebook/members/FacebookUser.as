@@ -17,6 +17,7 @@ package com.netoleal.facebook.members
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
 	import flash.utils.Dictionary;
 	
 	[Event( name="complete", type="flash.events.Event")]
@@ -36,6 +37,7 @@ package com.netoleal.facebook.members
 		private var loadSequence:ISequence;
 		private var friendsSequence:ISequence;
 		private var _connections:Connections;
+		private var tagSeq:Sequence;
 		
 		public function FacebookUser( p_uid:String, p_raw:Object = null )
 		{
@@ -50,6 +52,21 @@ package com.netoleal.facebook.members
 			
 			loadSequence = new Sequence( );
 			friendsSequence = new Sequence( );
+			tagSeq = new Sequence( );
+		}
+		
+		public function tagOnPhoto( photoID:String, x:uint = 0, y:uint = 0 ):ISequence
+		{
+			tagSeq.notifyStart( );
+			
+			Facebook.api( photoID + "/tags", onCreateTag, { to: this.id, x: x, y: y }, URLRequestMethod.POST );
+			
+			return tagSeq;
+		}
+		
+		private function onCreateTag( result:Object, error:Object ):void
+		{
+			tagSeq.notifyComplete( result != null, result );
 		}
 		
 		public function uploadPhoto( image:BitmapData, description:String = "" ):ISequence

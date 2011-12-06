@@ -1,15 +1,38 @@
 package com.netoleal.facebook.connections.model
 {
 	import asf.core.models.app.BaseModel;
+	import asf.core.util.Sequence;
+	import asf.interfaces.ISequence;
 	
+	import com.facebook.graph.Facebook;
 	import com.netoleal.facebook.members.FacebookUser;
 	import com.netoleal.facebook.members.FacebookUserFactory;
 	
+	import flash.net.URLRequestMethod;
+	
 	public class AlbumPhotoModel extends BaseModel
 	{
+		private var tagSeq:Sequence;
+		
 		public function AlbumPhotoModel(p_raw:*)
 		{
 			super(p_raw);
+			
+			tagSeq = new Sequence( );
+		}
+		
+		public function createTag( toUserID:String, x:uint = 0, y:uint = 0 ):ISequence
+		{
+			tagSeq.notifyStart( );
+			
+			Facebook.api( id + "/tags", onCreateTag, { to: toUserID, x: x, y: y }, URLRequestMethod.POST );
+			
+			return tagSeq;
+		}
+		
+		private function onCreateTag( result:Object, error:Object ):void
+		{
+			tagSeq.notifyComplete( result != null, result );
 		}
 		
 		public function get id( ):String

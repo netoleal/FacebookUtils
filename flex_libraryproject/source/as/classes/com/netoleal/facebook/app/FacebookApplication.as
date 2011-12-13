@@ -179,6 +179,11 @@ package com.netoleal.facebook.app
 			}
 		}
 		
+		public function get token():String{
+			var result:FacebookAuthResponse = Facebook.getAuthResponse( );
+			return result.accessToken;
+		}
+
 		public function dispose( ):void
 		{
 			facebookSession = null;
